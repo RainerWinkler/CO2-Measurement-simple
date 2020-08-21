@@ -5,11 +5,13 @@ There are two designs, one very simple. For this you need a calculator to get th
 A less simple design uses an analogue multiplier to calculate a voltage that has a simple relation to the ppm value.
 
 
-This is the lsimple design:
+This is the simple design:
 
-<img src="../../raw/master/SimpleCO2MeasuremenFrontView.jpg" height="250" width="250">
+<img src="../../raw/master/SimpleCO2MeasuremenFrontView.jpg" width="250">
+<img src="../../raw/master/SimpleCO2MeasuremenTopView.jpg"  width="250">
+<img src="../../raw/master/SimpleCO2MeasuremenBottomView.jpg"  width="250">
 
-<img src="../../raw/master/SimpleCO2MeasuremenTopView.jpg" height="250" width="250">
+The power cable is a cut USB cable.
 
 It uses a MH-Z19B sensor, two integrated operation amplifiers and a small voltmeter.
 There is no need for a further microcontroller. 
