@@ -1,3 +1,3 @@
 # CO2-Measurement-simple
 
-![Alt text](/path/to/img.jpg)
+![Alt text](SimpeCO2Measuremen Top View.jpg)
