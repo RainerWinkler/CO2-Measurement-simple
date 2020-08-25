@@ -17,6 +17,8 @@ The power cable is a cut USB cable.
 It uses a MH-Z19B sensor, two integrated operation amplifiers and a small voltmeter.
 There is no need for a further microcontroller. 
 
+For potential casings see [Casings](Casing.md).
+
 The very simple design is 
 
 <img src="../../raw/master/VerySimpleCO2Measurement.png">
@@ -40,4 +42,4 @@ Formula: ( 15 ml / 5700 ml ) * ( 957 mbar / 1023 mbar ) = 0.002462 = 2462 ppm
 
 This is 88% of the expected value. This is plausible when I assume that the syringe was not filled with pure CO2. I assume therefore that my assumption is correct that a new MH-Z19B starts with a default range of 5000 ppm.
 
-I correct for the air pressure because the sensor measures the absorption of infrared light by CO2. With lower pressure, less CO2 will be in the chamber. So the sensor will measure less CO2 unless a correction for the air pressure is made. Which is not the case for this device.
+I correct for the air pressure because the sensor measures the absorption of infrared light by CO2. With lower pressure, less CO2 will be in the chamber. So the sensor will measure less CO2 unless a correction for the air pressure is made. I guess this is not by this device.
