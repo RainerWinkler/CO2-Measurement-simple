@@ -17,6 +17,8 @@ The power cable is a cut USB cable.
 It uses a MH-Z19B sensor, two integrated operation amplifiers and a small voltmeter.
 There is no need for a further microcontroller. 
 
+For potential casings see [Casings](Casing.md).
+
 The very simple design is 
 
 <img src="../../raw/master/VerySimpleCO2Measurement.png">
