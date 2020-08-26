@@ -6,9 +6,21 @@ A less simple design uses an analogue multiplier to calculate a voltage that has
 
 Please read this document carefully to see what restrictions follow from this design.
 
-This is the very simple design. It needs a conversion table to get the ppm value from the reading. No soldering needed:
+# Very simple design
+
+This is the very simple design. It needs a conversion table to get the ppm value from the reading. No soldering needed, the connection is made with screw terminals:
 
 <img src="../../raw/master/VerySimpleCO2MeasurementFinishedTopWithScala.JPG" width="250">
+
+Parts needed:
+
+<img src="../../raw/master/PartsVerySimpleCO2Measurement.JPG" width="250">
+
+Tools needed:
+
+<img src="../../raw/master/ToolsVerySimpleCO2Measurement.JPG" width="250">
+
+# Simple design
 
 This is the simple design:
 
@@ -23,13 +35,15 @@ There is no need for a further microcontroller.
 
 For potential casings see [Casings](Casing.md).
 
-The very simple design is 
+# Very simple design circuit diagram
 
 <img src="../../raw/master/VerySimpleCO2Measurement.png">
 
-The simple design is
+# Simple design circuit diagram
 
 <img src="../../raw/master/SimpleCO2Measurement.png">
+
+# Further informations
 
 Datas heet of the sensor https://www.winsen-sensor.com/sensors/co2-sensor/mh-z19b.html. The most actual data sheet is linked there. To get older versions you may try a google search with MH-Z19B site:winsen-sensor.com
 
