@@ -6,6 +6,10 @@ A less simple design uses an analogue multiplier to calculate a voltage that has
 
 Please read this document carefully to see what restrictions follow from this design.
 
+This is the very simple design. It needs a conversion table to get the ppm value from the reading. No soldering needed:
+
+<img src="../../raw/master/VerySimpleCO2MeasurementFinishedTopWithScala.JPG" width="250">
+
 This is the simple design:
 
 <img src="../../raw/master/SimpleCO2MeasuremenFrontView.jpg" width="250">
