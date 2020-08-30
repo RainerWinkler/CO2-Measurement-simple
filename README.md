@@ -10,38 +10,38 @@ Please read this document carefully to see what restrictions follow from this de
 
 This is the very simple design. It needs a conversion table to get the ppm value from the reading. No soldering needed, the connection is made with screw terminals:
 
-<img src="../../raw/master/VerySimpleCO2MeasurementFinishedTopWithScala.JPG" width="250">
+<img src="../../raw/master/CO2Monitor2/VerySimpleCO2MeasurementFinishedTopWithScala.JPG" width="250">
 
 Parts needed:
 
-<img src="../../raw/master/PartsVerySimpleCO2Measurement.JPG" width="250">
+<img src="../../raw/master/CO2Monitor2/PartsVerySimpleCO2Measurement.JPG" width="250">
 
 Tools needed:
 
-<img src="../../raw/master/ToolsVerySimpleCO2Measurement.JPG" width="250">
+<img src="../../raw/master/CO2Monitor2/ToolsVerySimpleCO2Measurement.JPG" width="250">
 
 # Simple design
 
 This is the simple design:
 
-<img src="../../raw/master/SimpleCO2MeasuremenFrontView.jpg" width="250">
-<img src="../../raw/master/SimpleCO2MeasuremenTopView.jpg"  width="250">
-<img src="../../raw/master/SimpleCO2MeasuremenBottomView.jpg"  width="250">
+<img src="../../raw/master/CO2Monitor1/SimpleCO2MeasuremenFrontView.jpg" width="250">
+<img src="../../raw/master/CO2Monitor1/SimpleCO2MeasuremenTopView.jpg"  width="250">
+<img src="../../raw/master/CO2Monitor1/SimpleCO2MeasuremenBottomView.jpg"  width="250">
 
 The power cable is a cut USB cable.
 
 It uses a MH-Z19B sensor, two integrated operation amplifiers and a small voltmeter.
 There is no need for a further microcontroller. 
 
-For potential casings see [Casings](Casing.md).
+For potential casings see [Casings](CO2Monitor1/Casing.md).
 
 # Very simple design circuit diagram
 
-<img src="../../raw/master/VerySimpleCO2Measurement.png">
+<img src="../../raw/master/CO2Monitor2/VerySimpleCO2Measurement.png">
 
 # Simple design circuit diagram
 
-<img src="../../raw/master/SimpleCO2Measurement.png">
+<img src="../../raw/master/CO2Monitor1/SimpleCO2Measurement.png">
 
 # Further informations
 
