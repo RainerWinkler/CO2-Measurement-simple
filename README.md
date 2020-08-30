@@ -1,8 +1,14 @@
 # CO2-Measurement-simple
 
-A very simple CO2 measurement device for about than 40 Euros or 50$. 
-There are two designs, one very simple. For this you need a calculator to get the CO2 concentration.
-A less simple design uses an analogue multiplier to calculate a voltage that has a simple relation to the ppm value.
+This repository contains simple CO2 measurement devices for about than 40 Euros or 50$. 
+There are multiple designs, the most simple needs no soldering and can be build with minor technical understanding.
+
+The intention of this repository is to provide informations how to build a CO2 monitor which:
+
+* Uses easily available, cheap components - So that mass production is feasible
+* Restricts to features which are really needed for a CO2 monitor during the COVID-19 epidemic - Reduce complexity and reduce problems with wrong usage
+* Has MIT license - Can easily be copied and distributed by everyone, even commercial
+
 
 Please read this document carefully to see what restrictions follow from this design.
 
