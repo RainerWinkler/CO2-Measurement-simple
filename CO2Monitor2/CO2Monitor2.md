@@ -1,8 +1,12 @@
 # CO2-Measurement-simple
 
 A very simple CO2 measurement device for about than 40 Euros or 50$. 
-There are two designs, one very simple. For this you need a calculator to get the CO2 concentration.
-A less simple design uses an analogue multiplier to calculate a voltage that has a simple relation to the ppm value.
+This is the most simple design. 
+It can be build in a few minutes without soldering.
+Only minimal technical understanding is required.
+You need a calculator to get the CO2 concentration.
+
+You may use this design after you bought the MH-Z19B sensor to test it and to get a basic understanding of CO2 measurement.
 
 Please read this document carefully to see what restrictions follow from this design.
 
