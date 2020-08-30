@@ -10,8 +10,8 @@
 
 // Pin 13 is used so that LED L will be active when the dummy load is drawn
 int pinDummyLoad = 13;
-int pinTxOfSensor = 6;
 int pinRxOfSensor = 7;
+int pinTxOfSensor = 6;
 int pinWarningLED = 10;
 int pinErrorLED = 9;
 int pinLCDrs = 12;
@@ -94,23 +94,23 @@ void loop() {
 
   // Bar with intensity
   lcd.setCursor(0, 0);
-  if(CO2<438){       lcd.print("                ");} // 0
-  else if(CO2<475){  lcd.print("*               ");} // 1
-  else if(CO2<513){  lcd.print("**              ");} // 2
-  else if(CO2<550){  lcd.print("***             ");} // 3
-  else if(CO2<588){  lcd.print("****            ");} //4
-  else if(CO2<625){  lcd.print("*****           ");} //5
-  else if(CO2<663){  lcd.print("******          ");} //6
-  else if(CO2<700){  lcd.print("*******         ");} //7
-  else if(CO2<738){  lcd.print("********        ");} //8
-  else if(CO2<775){  lcd.print("*********       ");} //9
-  else if(CO2<813){  lcd.print("**********      ");} //10
-  else if(CO2<850){  lcd.print("***********     ");} //11
-  else if(CO2<888){  lcd.print("************    ");} //12
-  else if(CO2<925){  lcd.print("*************   ");} //13
-  else if(CO2<963){  lcd.print("**************  ");} //14
-  else if(CO2<1000){ lcd.print("*************** ");} //15
-  else {             lcd.print("****************");} //16
+  if(CO2<438){       lcd.print("                ");} 
+  else if(CO2<475){  lcd.print("*               ");} 
+  else if(CO2<513){  lcd.print("**              ");} 
+  else if(CO2<550){  lcd.print("***             ");} 
+  else if(CO2<588){  lcd.print("****            ");} 
+  else if(CO2<625){  lcd.print("*****           ");} 
+  else if(CO2<663){  lcd.print("******          ");}
+  else if(CO2<700){  lcd.print("*******         ");} 
+  else if(CO2<738){  lcd.print("********        ");}
+  else if(CO2<775){  lcd.print("*********       ");}
+  else if(CO2<813){  lcd.print("**********      ");} 
+  else if(CO2<850){  lcd.print("***********     ");} 
+  else if(CO2<888){  lcd.print("************    ");} 
+  else if(CO2<925){  lcd.print("*************   ");} 
+  else if(CO2<963){  lcd.print("**************  ");} 
+  else if(CO2<1000){ lcd.print("*************** ");}
+  else {             lcd.print("****************");} 
   
 }
 
