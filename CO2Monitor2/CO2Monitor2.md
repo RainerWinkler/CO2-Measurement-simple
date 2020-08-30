@@ -19,3 +19,7 @@ Parts needed:
 Tools needed:
 
 <img src="../../../raw/master/CO2Monitor2/ToolsVerySimpleCO2Measurement.JPG" width="250">
+
+# Very simple design circuit diagram
+
+<img src="../../../raw/master/CO2Monitor2/VerySimpleCO2Measurement.png">
