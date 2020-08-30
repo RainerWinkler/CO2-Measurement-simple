@@ -1,10 +1,8 @@
 # CO2-Measurement-simple
 
-A very simple CO2 measurement device for about than 40 Euros or 50$. 
-There are two designs, one very simple. For this you need a calculator to get the CO2 concentration.
-A less simple design uses an analogue multiplier to calculate a voltage that has a simple relation to the ppm value.
+A simple CO2 measurement device for about than 40 Euros or 50$ which does not require an additional microcomputer. It uses an analogue multiplier to show correct ppm values. 
 
-Please read this document carefully to see what restrictions follow from this design.
+Please read this repository carefully to see what restrictions follow from this design.
 
 # Simple design
 
