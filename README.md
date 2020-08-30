@@ -12,6 +12,18 @@ The intention of this repository is to provide informations how to build a CO2 m
 
 Please read this document carefully to see what restrictions follow from this design.
 
+# With Display and Warning LED
+
+This design has warning lights, a display and logic to enable it to be powered by a power bank which auto switch off logic.
+
+<img src="../../raw/master/CO2Monitor3/Example529ppm.jpg" width="250">
+
+<img src="../../raw/master/CO2Monitor3/Example861ppm.jpg" width="250">
+
+<img src="../../raw/master/CO2Monitor3/Example1741ppm.jpg" width="250">
+
+See [CO2 Monitor Design 3](CO2Monitor3/CO2Monitor3.md) for details.
+
 # Very simple design
 
 This is the very simple design. It needs a conversion table to get the ppm value from the reading. No soldering needed, the connection is made with screw terminals:
