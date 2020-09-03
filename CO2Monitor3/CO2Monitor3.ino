@@ -12,6 +12,7 @@
 int pinDummyLoad = 13;
 int pinRxOfSensor = 7;
 int pinTxOfSensor = 6;
+int pinPositiveLED = 8;
 int pinWarningLED = 11;
 int pinErrorLED = 9;
 int pinLCDrs = 12;
@@ -42,6 +43,7 @@ void setup() {
 
   pinMode(pinErrorLED, OUTPUT);
   pinMode(pinWarningLED, OUTPUT);
+  pinMode(pinPositiveLED, OUTPUT);
   pinMode(pinDummyLoad, OUTPUT); 
 
   // Draw load during setup to prevent that powerbank does not go into standby when setup takes too long
@@ -91,6 +93,10 @@ void loop() {
   // Yellow light
   if ( CO2>=700 && CO2<1000 ){ digitalWrite(pinWarningLED, HIGH);    }
   else { digitalWrite(pinWarningLED, LOW); };  
+  
+  // Green light
+  if ( CO2<700 ){ digitalWrite(pinPositiveLED, HIGH);    }
+  else { digitalWrite(pinPositiveLED, LOW); };  
 
   // Bar with intensity
   lcd.setCursor(0, 0);
