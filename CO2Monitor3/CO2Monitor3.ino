@@ -51,6 +51,11 @@ void setup() {
   
   // Configure LCD display
   lcd.begin(16, 2);
+
+  // Test LED during start
+  digitalWrite(pinPositiveLED, HIGH);
+  digitalWrite(pinWarningLED, HIGH);
+  digitalWrite(pinErrorLED, HIGH);
   
   // Welcome messages
   lcd.setCursor(0, 0);
