@@ -11,16 +11,16 @@
 // Pin 13 is used so that LED L will be active when the dummy load is drawn
 int pinDummyLoad = 13;
 int pinRxOfSensor = 7;
-int pinTxOfSensor = 6;
-int pinPositiveLED = 8;
-int pinWarningLED = 11;
-int pinErrorLED = 9;
-int pinLCDrs = 12;
-int pinLCDen = 10;
-int pinLCDd4 = 5;
-int pinLCDd5 = 4;
-int pinLCDd6 = 3;
-int pinLCDd7 = 2;
+int pinTxOfSensor = 8;//6->8
+int pinPositiveLED = 4;//8->4
+int pinWarningLED = 3;//11->3
+int pinErrorLED = 2;//9->2
+int pinLCDrs = 5;//12->5
+int pinLCDen = 6;//10->6
+int pinLCDd4 = 9;//5->9
+int pinLCDd5 = 10;//4->10
+int pinLCDd6 = 11;//3->11
+int pinLCDd7 = 12;//2->12
 
 // Configure Serial connection
 
