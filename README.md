@@ -38,7 +38,7 @@ Tools needed:
 
 <img src="../../raw/master/CO2Monitor2/ToolsVerySimpleCO2Measurement.JPG" width="250">
 
-See [CO2 Monitor Design 1](CO2Monitor2/CO2Monitor2.md) for details.
+See [CO2 Monitor Design 2](CO2Monitor2/CO2Monitor2.md) for details.
 
 # Simple design
 
