@@ -61,21 +61,26 @@ void setup() {
   lcd.setCursor(0, 0);
   lcd.print("Welcome"); // 0
   lcd.setCursor(0, 1);
-  lcd.print("CO2 Monitor 3"); // 0
+  lcd.print("CO2 Monitor 3 V1.01"); // 0
   delay(5000);
 
   // Start serial connection to sensor
-  Serial.begin(9600);
+  Serial.begin(115200);
   sensorConnection.begin(9600);  
   
 }
 
 void loop() {
 
+  Serial.println("Loop is started");
+
   // Check whether Load has to be switched on or off
 
   if ((millis() - loadSwitchedOffMS) > loadSwitchOffTimeMS) 
     {
+
+      Serial.println("Load is switched on");
+      
       loadSwitchedOffMS = millis();
       digitalWrite(pinDummyLoad,HIGH);// Draw current to load powerbank
       delay(loadSwitchOnTimeMS);
