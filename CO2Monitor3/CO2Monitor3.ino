@@ -33,7 +33,9 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 // Configure additional load to prevent that a powerbank goes into standby mode
 
-unsigned long loadSwitchedOffMS = 0;
+unsigned long loadSwitchNextToogleMS = 0;
+bool loadActive = false;
+
 unsigned long loadSwitchOffTimeMS = 4500;
 unsigned long loadSwitchOnTimeMS = 1000;
 
@@ -61,31 +63,43 @@ void setup() {
   lcd.setCursor(0, 0);
   lcd.print("Welcome"); // 0
   lcd.setCursor(0, 1);
-  lcd.print("CO2 Monitor 3"); // 0
+  lcd.print("CO2 Monitor 3 B"); // 0
   delay(5000);
 
   // Start serial connection to sensor
   Serial.begin(115200);
   sensorConnection.begin(9600);  
+
+  // Prepare Load logic
+   loadSwitchNextToogleMS = millis() + loadSwitchOffTimeMS;
+  loadActive = false;
   
 }
 
 void loop() {
 
-  Serial.println("Loop is started");
+//  Serial.println("Loop is started");
+
+  // Toogle load
+  if ( millis() > loadSwitchNextToogleMS)
+    {
+      if (loadActive)
+        {
+          loadSwitchNextToogleMS = millis()+loadSwitchOffTimeMS;  
+          digitalWrite(pinDummyLoad,LOW);          
+          Serial.println("Load is switched off");       
+        }
+      else
+        {
+          loadSwitchNextToogleMS = millis()+loadSwitchOnTimeMS;
+          digitalWrite(pinDummyLoad,HIGH);
+          Serial.println("Load is switched on");  
+          
+        };
+      loadActive = ! loadActive;
+    }
 
   // Check whether Load has to be switched on or off
-
-  if ((millis() - loadSwitchedOffMS) > loadSwitchOffTimeMS) 
-    {
-
-      Serial.println("Load is switched on");
-      
-      loadSwitchedOffMS = millis();
-      digitalWrite(pinDummyLoad,HIGH);// Draw current to load powerbank
-      delay(loadSwitchOnTimeMS);
-      digitalWrite(pinDummyLoad,LOW);
-    }  
 
   int CO2= 0;
 
