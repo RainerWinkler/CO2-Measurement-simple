@@ -63,7 +63,7 @@ void setup() {
   lcd.setCursor(0, 0);
   lcd.print("Welcome"); // 0
   lcd.setCursor(0, 1);
-  lcd.print("CO2 Monitor 3 B"); // 0
+  lcd.print("CO2 Monitor 3 C"); // 0
   delay(5000);
 
   // Start serial connection to sensor
@@ -101,7 +101,7 @@ void loop() {
 
   // Check whether Load has to be switched on or off
 
-  int CO2= 0;
+  short CO2 = 0;
 
   getCO2Value(&CO2);
 
@@ -144,7 +144,7 @@ void loop() {
   
 }
 
-void getCO2Value(int *CO2){
+void getCO2Value(short *CO2){
 
   // Sending command for MH-Z19B according to data sheet
   byte commandReadCO2[9] = {0xFF,0x01,0x86,0x00,0x00,0x00,0x00,0x00,0x79};
@@ -159,5 +159,5 @@ void getCO2Value(int *CO2){
   sensorConnection.readBytes(returnValue, 9);
   
   // Evaluate Return value according to data sheet  
-  *CO2 = 256 * (int)returnValue[2] + returnValue[3];
+  *CO2 = 256 * (short)returnValue[2] + returnValue[3];
 }
