@@ -33,9 +33,9 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 // Configure additional load to prevent that a powerbank goes into standby mode
 
-long loadSwitchedOffMS = 0;
-long loadSwitchOffTimeMS = 4500;
-long loadSwitchOnTimeMS = 1000;
+unsigned long loadSwitchedOffMS = 0;
+unsigned long loadSwitchOffTimeMS = 4500;
+unsigned long loadSwitchOnTimeMS = 1000;
 
 void setup() {
 
@@ -61,7 +61,7 @@ void setup() {
   lcd.setCursor(0, 0);
   lcd.print("Welcome"); // 0
   lcd.setCursor(0, 1);
-  lcd.print("CO2 Monitor 3 V1.01"); // 0
+  lcd.print("CO2 Monitor 3"); // 0
   delay(5000);
 
   // Start serial connection to sensor
