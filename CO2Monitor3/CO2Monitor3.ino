@@ -1,10 +1,11 @@
-// CO2 Monitor 3
 // Uses an Arduino UNO R3
+// CO2 Monitor 3
 // See https://github.com/RainerWinkler/CO2-Measurement-simple
 // Rainer Winkler, MIT License 2020
 
 #include <LiquidCrystal.h>
 #include <SoftwareSerial.h>
+#include <EEPROM.h>
 
 // Configure pins
 
@@ -30,6 +31,20 @@ SoftwareSerial sensorConnection(pinTxOfSensor,pinRxOfSensor); //Tx of sensor is 
 
 const int rs = pinLCDrs, en = pinLCDen, d4 = pinLCDd4, d5 = pinLCDd5, d6 = pinLCDd6, d7 = pinLCDd7;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+// Commands via Serial Interface
+
+String command = "";
+char character;
+
+// Configure EEPROM usage for log
+// Start of log value (This has to be an even number starting with
+// 0. In case of 0 no free EEPROM registers are available
+int logFirstRegister = 0;
+unsigned long logIntervallMS = 5000;
+unsigned long  logNextMS = 0;
+short position2 = 1;
+
 
 // Configure additional load to prevent that a powerbank goes into standby mode
 
@@ -63,7 +78,7 @@ void setup() {
   lcd.setCursor(0, 0);
   lcd.print("Welcome"); // 0
   lcd.setCursor(0, 1);
-  lcd.print("CO2 Monitor 3 C"); // 0
+  lcd.print("CO2 Monitor 3 D"); // 0
   delay(5000);
 
   // Start serial connection to sensor
@@ -71,8 +86,27 @@ void setup() {
   sensorConnection.begin(9600);  
 
   // Prepare Load logic
-   loadSwitchNextToogleMS = millis() + loadSwitchOffTimeMS;
+  loadSwitchNextToogleMS = millis() + loadSwitchOffTimeMS;
   loadActive = false;
+
+  // Prepare logging
+  logNextMS = millis() + logIntervallMS;
+
+  // Find where to proceed with logging
+
+    for (int index2 = logFirstRegister ; index2 < EEPROM.length()-1;) {     
+      unsigned int value;
+      EEPROM.get(index2,value);
+      if (value >=50000){
+        break;
+      };
+    index2 = index2 + 2;
+    position2 = position2 + 1;
+  }
+  Serial.print("Logging started at ");
+  Serial.println(position2);
+
+  Serial.println("Processing started");
   
 }
 
@@ -80,20 +114,36 @@ void loop() {
 
 //  Serial.println("Loop is started");
 
+  // Process commands
+
+//  if (Serial.available()){
+//    command = Serial.readString();      
+//     
+//  }
+
+    while(Serial.available()) {
+      character = Serial.read();
+      command.concat(character);
+  }
+
+  if (command != "") {
+    processCommand();
+  }
+
+  command = "";
+
   // Toogle load
   if ( millis() > loadSwitchNextToogleMS)
     {
       if (loadActive)
         {
           loadSwitchNextToogleMS = millis()+loadSwitchOffTimeMS;  
-          digitalWrite(pinDummyLoad,LOW);          
-          Serial.println("Load is switched off");       
+          digitalWrite(pinDummyLoad,LOW);               
         }
       else
         {
           loadSwitchNextToogleMS = millis()+loadSwitchOnTimeMS;
           digitalWrite(pinDummyLoad,HIGH);
-          Serial.println("Load is switched on");  
           
         };
       loadActive = ! loadActive;
@@ -141,6 +191,28 @@ void loop() {
   else if(CO2<963){  lcd.print("**************  ");} 
   else if(CO2<1000){ lcd.print("*************** ");}
   else {             lcd.print("****************");} 
+
+  // Log when required
+  if (millis()> logNextMS){
+    int nextAdress = logFirstRegister+position2*2;
+    if (nextAdress+2>EEPROM.length()){
+      Serial.println("Log is full");
+    }
+    else {
+      int thisAdress = nextAdress-2;
+      unsigned int co2value = CO2;
+      unsigned int stopValue = 50000;
+      EEPROM.put(thisAdress,co2value);
+      EEPROM.put(nextAdress,stopValue);
+      Serial.print("Logged at position ");
+      Serial.print(position2);
+      Serial.print("\t");
+      Serial.println(CO2);
+      position2 = position2 + 1;
+        
+    };
+    logNextMS = logNextMS + logIntervallMS;            
+  }
   
 }
 
@@ -160,4 +232,44 @@ void getCO2Value(short *CO2){
   
   // Evaluate Return value according to data sheet  
   *CO2 = 256 * (short)returnValue[2] + returnValue[3];
+}
+
+void processCommand( ){
+  Serial.print("Command received: ");
+  Serial.println(command); 
+
+  if (command == "c\n"){
+    Serial.println("Logged data will be cleared");
+    EEPROM.put(logFirstRegister,50000);
+    // Restart logging
+    position2 = 1;
+    logNextMS = millis();
+  }
+
+  else if (command == "l\n"){
+    // Display EEPROM content
+    short position = 1;
+    for (int index = logFirstRegister ; index < EEPROM.length()-1;) {     
+      unsigned int value;
+      EEPROM.get(index,value);
+      if (value>=50000){
+        break;
+      }
+      Serial.print(position);
+      Serial.print("\t");
+      Serial.println(value);
+
+      index = index + 2;
+      position = position + 1;
+  }
+  }
+  else if (command == "h\n"){
+    Serial.println("Help"); 
+    Serial.println("Send h to get help");
+    Serial.println("Send c to clear all logged data"); 
+    Serial.println("Send l to display all logged data"); 
+  };
+    
+
+  
 }
