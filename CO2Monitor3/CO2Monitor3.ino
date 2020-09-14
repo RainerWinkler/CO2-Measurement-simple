@@ -41,7 +41,7 @@ char character;
 // Start of log value (This has to be an even number starting with
 // 0. In case of 0 no free EEPROM registers are available
 int logFirstRegister = 0;
-unsigned long logIntervallMS = 60000;
+unsigned long logIntervallMS = 120000;
 unsigned long  logNextMS = 0;
 short position2 = 1;
 short maxPositions = 0;
