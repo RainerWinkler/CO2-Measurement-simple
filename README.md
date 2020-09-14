@@ -50,12 +50,14 @@ See [CO2 Monitor Design 1](CO2Monitor1/CO2Monitor1.md) for details.
 
 # Further informations
 
-Datas heet of the sensor https://www.winsen-sensor.com/sensors/co2-sensor/mh-z19b.html. The most actual data sheet is linked there. To get older versions you may try a google search with MH-Z19B site:winsen-sensor.com
+Datas sheet of the sensor https://www.winsen-sensor.com/sensors/co2-sensor/mh-z19b.html. The most actual data sheet is linked there. To get older versions you may try a google search with MH-Z19B site:winsen-sensor.com
 
 To calibrate follow the data sheet. Bring the sensor to clean ambient air for at least 20 minutes. Push the button which connects to HD for at least 7 seconds. Be careful not to breath against the device when you do this. 
 
-The auto calibrate option is the default, so the sensor will calibrate itself every 24 hours. This cannot be deactivated with this device as there is no data connection to the sensor. The data sheet writes correctly: "This method is suitable for office and home environment, not suitable for agriculture greenhouse, farm,
+The auto calibrate option is the default, so the sensor will calibrate itself every 24 hours. This cannot be deactivated with m0del 1 and 2 as there is no data connection to the sensor. The data sheet writes correctly: "This method is suitable for office and home environment, not suitable for agriculture greenhouse, farm,
 refrigerator, etc."
+
+The auto calibration works only reliable when the CO2 concentration is sufficiently often enough around 400 ppm. In model 3 it may be switched off. See this forum https://www.letscontrolit.com/forum/viewtopic.php?t=3736 for comparisons of MH-Z19B with other sensors and a discussion of the reliability of the MH-Z19B.
 
 The default range of the MH-Z19B is not specified in the manual. I deduced that it is 5000 ppm from the voltage measured with clean air. I did now a simple calibration of the device to check this assumption. I put the sensor in a bucket with a volume of 5.7 liter and added a small fan. The bucket is closed with a thin foil.
 I used a CO2 bottle from a soda club machine to fill a small bag with CO2. The CO2 was drawn into a syringe.
