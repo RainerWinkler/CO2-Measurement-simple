@@ -308,6 +308,6 @@ void writeLog(unsigned int value ){
       position2 = position2 + 1;
         
     };
-    logNextMS = logNextMS + logIntervallMS;            
+//    logNextMS = logNextMS + logIntervallMS;            
 //  }
 };
