@@ -40,7 +40,7 @@ String command = "";
 // Start of log value (This has to be an even number starting with
 // 0. In case of 0 no free EEPROM registers are available
 int logFirstRegister = 0;
-unsigned long logIntervallMS = 120000;
+unsigned long logIntervallMS = 300000;
 unsigned long  logNextMS = 0;
 short logPosition = 1;
 short maxPosition = 0;
@@ -73,13 +73,47 @@ void setup() {
   digitalWrite(pinPositiveLED, HIGH);
   digitalWrite(pinWarningLED, HIGH);
   digitalWrite(pinErrorLED, HIGH);
-  
+
   // Welcome messages
   lcd.setCursor(0, 0);
-  lcd.print("Welcome"); // 0
+  lcd.print("Welcome         "); 
   lcd.setCursor(0, 1);
-  lcd.print("CO2 Monitor 3"); // 0
-  delay(5000);
+  lcd.print("CO2 Monitor 3   "); 
+  delay(3000);
+  for (int i = 1; i < 4; ++i){
+  
+    lcd.setCursor(0, 0);
+    lcd.print("Connect with    "); 
+    lcd.setCursor(0, 1);
+    lcd.print("115200 Baud     ");
+    delay(2000);
+  
+    lcd.setCursor(0, 0);
+    lcd.print("Send h for help "); 
+    lcd.setCursor(0, 1);
+    lcd.print("                "); 
+    delay(2000);
+
+    lcd.setCursor(0, 0);
+    lcd.print("Logged all 5 min");
+    lcd.setCursor(0, 1);
+    lcd.print("                "); 
+    delay(2000);
+  
+    lcd.setCursor(0, 0);
+  //lcd.print("1234567890123456"); 
+    lcd.print("Used      -> 100"); 
+    lcd.setCursor(0, 1);
+    lcd.print("Free      -> 411"); 
+    delay(2000);
+  
+    lcd.setCursor(0, 0);
+  //lcd.print("1234567890123456"); 
+    lcd.print("** <- Bar graph "); 
+    lcd.setCursor(0, 1);
+    lcd.print("16 x * = 1000ppm"); 
+    delay(2000);
+  }
 
   // Start serial connection to sensor
   Serial.begin(115200);
@@ -185,7 +219,7 @@ void loop() {
   lcd.setCursor(0, 1);
   lcd.print("CO2 "); 
   lcd.print(CO2);
-  lcd.print(" ppm       ");  
+  lcd.print(" ppm            ");  
   lcd.setCursor(13,1);
   lcd.print(maxPosition-logPosition);
   
