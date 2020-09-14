@@ -35,7 +35,6 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 // Commands via Serial Interface
 
 String command = "";
-char character;
 
 // Configure EEPROM usage for log
 // Start of log value (This has to be an even number starting with
@@ -43,8 +42,8 @@ char character;
 int logFirstRegister = 0;
 unsigned long logIntervallMS = 120000;
 unsigned long  logNextMS = 0;
-short position2 = 1;
-short maxPositions = 0;
+short logPosition = 1;
+short maxPosition = 0;
 
 
 // Configure additional load to prevent that a powerbank goes into standby mode
@@ -102,20 +101,20 @@ void setup() {
         break;
       };
     index2 = index2 + 2;
-    position2 = position2 + 1;
+    logPosition = logPosition + 1;
   }
   
-  maxPositions = ((EEPROM.length()-logFirstRegister)/2);
+  maxPosition = ((EEPROM.length()-logFirstRegister)/2);
   
   // Make a mark that the device is started
   writeLog(49999);
   
-  Serial.print("maxPositions");
-  Serial.println(maxPositions);
+  Serial.print("maxPosition");
+  Serial.println(maxPosition);
   Serial.print("Logging Intervall [ms]: ");
   Serial.println(logIntervallMS);
   Serial.print("Logging started at ");
-  Serial.println(position2);
+  Serial.println(logPosition);
 
   Serial.println("Processing started");
   
@@ -123,17 +122,8 @@ void setup() {
 
 void loop() {
 
-//  Serial.println("Loop is started");
-
-  // Process commands
-
-//  if (Serial.available()){
-//    command = Serial.readString();      
-//     
-//  }
-
     while(Serial.available()) {
-      character = Serial.read();
+      char character = Serial.read();
       command.concat(character);
   }
 
@@ -166,25 +156,6 @@ void loop() {
 
   getCO2Value(&CO2);
 
-  lcd.setCursor(0, 1);
-  lcd.print("CO2 "); 
-  lcd.print(CO2);
-  lcd.print(" ppm       ");  
-  lcd.setCursor(13,1);
-  lcd.print(maxPositions-position2);
-  
-  // Red light
-  if ( CO2>=1000 ){ digitalWrite(pinErrorLED, HIGH);  }
-  else { digitalWrite(pinErrorLED, LOW); };
-  
-  // Yellow light
-  if ( CO2>=700 && CO2<1000 ){ digitalWrite(pinWarningLED, HIGH);    }
-  else { digitalWrite(pinWarningLED, LOW); };  
-  
-  // Green light
-  if ( CO2<700 ){ digitalWrite(pinPositiveLED, HIGH);    }
-  else { digitalWrite(pinPositiveLED, LOW); };  
-
   // Bar with intensity
   lcd.setCursor(0, 0);
   if(CO2<438){       lcd.print("                ");} 
@@ -205,31 +176,38 @@ void loop() {
   else if(CO2<1000){ lcd.print("*************** ");}
   else {             lcd.print("****************");}; 
 
- 
+  if (CO2<925){
+    // Write log position as long as not too many stars are displayed
+    lcd.setCursor(13,0);
+    lcd.print(logPosition);
+  }
+
+  lcd.setCursor(0, 1);
+  lcd.print("CO2 "); 
+  lcd.print(CO2);
+  lcd.print(" ppm       ");  
+  lcd.setCursor(13,1);
+  lcd.print(maxPosition-logPosition);
+  
+  // Red light
+  if ( CO2>=1000 ){ digitalWrite(pinErrorLED, HIGH);  }
+  else { digitalWrite(pinErrorLED, LOW); };
+  
+  // Yellow light
+  if ( CO2>=700 && CO2<1000 ){ digitalWrite(pinWarningLED, HIGH);    }
+  else { digitalWrite(pinWarningLED, LOW); };  
+  
+  // Green light
+  if ( CO2<700 ){ digitalWrite(pinPositiveLED, HIGH);    }
+  else { digitalWrite(pinPositiveLED, LOW); };  
+
 
   // Log when required
   if (millis()> logNextMS){
       writeLog(CO2);
       logNextMS = logNextMS + logIntervallMS;    
   }
-//    int nextAdress = logFirstRegister+position2*2;
-//    if (nextAdress+2>EEPROM.length()){
-//      Serial.println("Log is full");
-//    }
-//    else {
-//      int thisAdress = nextAdress-2;
-//      unsigned int co2value = CO2;
-//      unsigned int stopValue = 50000;
-//      EEPROM.put(thisAdress,co2value);
-//      EEPROM.put(nextAdress,stopValue);
-//      Serial.print("Logged at position ");
-//      Serial.print(position2);
-//      Serial.print("\t");
-//      Serial.println(CO2);
-//      position2 = position2 + 1;
-//        
-//    };
-        
+      
   
 }
 
@@ -259,12 +237,12 @@ void processCommand( ){
     Serial.println("Logged data will be cleared");
     EEPROM.put(logFirstRegister,50000);
     // Restart logging
-    position2 = 1;
+    logPosition = 1;
     logNextMS = millis();
   }
 
   else if (command == "l\n"){
-    // Display EEPROM content
+
     short position = 1;
     for (int index = logFirstRegister ; index < EEPROM.length()-1;) {     
       unsigned int value;
@@ -289,9 +267,7 @@ void processCommand( ){
 }
     
 void writeLog(unsigned int value ){
-    // Log when required
-//  if (millis()> logNextMS ){
-    int nextAdress = logFirstRegister+position2*2;
+    int nextAdress = logFirstRegister+logPosition*2;
     if (nextAdress+2>EEPROM.length()){
       Serial.println("Log is full");
     }
@@ -302,12 +278,10 @@ void writeLog(unsigned int value ){
       EEPROM.put(thisAdress,co2value);
       EEPROM.put(nextAdress,stopValue);
       Serial.print("Logged at position ");
-      Serial.print(position2);
+      Serial.print(logPosition);
       Serial.print("\t");
       Serial.println(value);
-      position2 = position2 + 1;
+      logPosition = logPosition + 1;
         
     };
-//    logNextMS = logNextMS + logIntervallMS;            
-//  }
 };
