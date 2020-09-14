@@ -213,7 +213,7 @@ void loop() {
   if (CO2<925){
     // Write log position as long as not too many stars are displayed
     lcd.setCursor(13,0);
-    lcd.print(logPosition);
+    lcd.print(logPosition - 1);
   }
 
   lcd.setCursor(0, 1);
