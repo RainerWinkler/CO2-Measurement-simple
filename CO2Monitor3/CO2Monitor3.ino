@@ -78,7 +78,7 @@ void setup() {
   lcd.setCursor(0, 0);
   lcd.print("Welcome"); // 0
   lcd.setCursor(0, 1);
-  lcd.print("CO2 Monitor 3 D"); // 0
+  lcd.print("CO2 Monitor 3"); // 0
   delay(5000);
 
   // Start serial connection to sensor
@@ -234,20 +234,22 @@ void processCommand( ){
   Serial.println(command); 
 
   if (command == "c\n"){
+    // Clear log
     Serial.println("Logged data will be cleared");
-    EEPROM.put(logFirstRegister,50000);
+    EEPROM.put(logFirstRegister,50000); // This marks the end of the log
     // Restart logging
     logPosition = 1;
     logNextMS = millis();
   }
 
   else if (command == "l\n"){
-
+    // Output Log result
     short position = 1;
     for (int index = logFirstRegister ; index < EEPROM.length()-1;) {     
       unsigned int value;
       EEPROM.get(index,value);
       if (value>=50000){
+        // This is a stop value, no further display needed
         break;
       }
       Serial.print(position);
@@ -256,13 +258,32 @@ void processCommand( ){
 
       index = index + 2;
       position = position + 1;
+    }
   }
+  else if (command == "sca\n"){
+  // activate self calibration
+  // Sending command for MH-Z19B according to data sheet
+  byte commandSelfCalOn[9] = {0xFF,0x01,0x79,0xA0,0x00,0x00,0x00,0x00,0xE6}; // on
+  
+  sensorConnection.write(commandSelfCalOn, 9);
+  Serial.println("Self calibration is on");  
+  }
+  else if (command == "sco\n"){
+  // deactivate self calibration
+  // Sending command for MH-Z19B according to data sheet
+  byte commandSelfCalOff[9] = {0xFF,0x01,0x79,0xA0,0x00,0x00,0x00,0x00,0x86}; // off
+  
+  sensorConnection.write(commandSelfCalOff, 9);
+  Serial.println("Self calibration is off");  
+    
   }
   else if (command == "h\n"){
     Serial.println("Help"); 
     Serial.println("Send h to get help");
     Serial.println("Send c to clear all logged data"); 
     Serial.println("Send l to display all logged data"); 
+    Serial.println("Send sca to activate self calibration (Default)"); 
+    Serial.println("Send sco to deactivate self calibration"); 
   };
 }
     
