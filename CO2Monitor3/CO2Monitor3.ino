@@ -261,20 +261,29 @@ void processCommand( ){
     }
   }
   else if (command == "sca\n"){
-  // activate self calibration
-  // Sending command for MH-Z19B according to data sheet
-  byte commandSelfCalOn[9] = {0xFF,0x01,0x79,0xA0,0x00,0x00,0x00,0x00,0xE6}; // on
+    // activate self calibration
+    // Sending command for MH-Z19B according to data sheet
+    byte commandSelfCalOn[9] = {0xFF,0x01,0x79,0xA0,0x00,0x00,0x00,0x00,0xE6}; // on
   
-  sensorConnection.write(commandSelfCalOn, 9);
-  Serial.println("Self calibration is on");  
+    sensorConnection.write(commandSelfCalOn, 9);
+    Serial.println("Self calibration is on");  
   }
   else if (command == "sco\n"){
-  // deactivate self calibration
-  // Sending command for MH-Z19B according to data sheet
-  byte commandSelfCalOff[9] = {0xFF,0x01,0x79,0xA0,0x00,0x00,0x00,0x00,0x86}; // off
+    // deactivate self calibration
+    // Sending command for MH-Z19B according to data sheet
+    byte commandSelfCalOff[9] = {0xFF,0x01,0x79,0x00,0x00,0x00,0x00,0x00,0x86}; // off
   
-  sensorConnection.write(commandSelfCalOff, 9);
-  Serial.println("Self calibration is off");  
+    sensorConnection.write(commandSelfCalOff, 9);
+    Serial.println("Self calibration is off");  
+    
+  }
+  else if (command == "cal\n"){
+    // Calibrate sensor
+    // Sending command for MH-Z19B according to data sheet
+    byte commandCalibrate[9] = {0xFF,0x01,0x87,0x00,0x00,0x00,0x00,0x00,0x78}; // calibrate sensor
+  
+    sensorConnection.write(commandCalibrate, 9);
+    Serial.println("Calibration to 400 ppm is done");  
     
   }
   else if (command == "h\n"){
@@ -284,6 +293,7 @@ void processCommand( ){
     Serial.println("Send l to display all logged data"); 
     Serial.println("Send sca to activate self calibration (Default)"); 
     Serial.println("Send sco to deactivate self calibration"); 
+    Serial.println("Send cal to calibrate (CO2 has to be 400 ppm, wait 20 Minutes in this environment)"); 
   };
 }
     
