@@ -95,7 +95,7 @@ void setup() {
   lcd.setCursor(0, 1);
   lcd.print("CO2 Monitor 3   "); 
   delay(3000);
-  for (int i = 1; i < 4; ++i){
+  for (int i = 1; i < 2; ++i){
   
     lcd.setCursor(0, 0);
     lcd.print("Connect with    "); 
