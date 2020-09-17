@@ -39,8 +39,9 @@ String command = "";
 // Configure EEPROM usage for log
 // Start of log value (This has to be an even number starting with
 // 0. In case of 0 no free EEPROM registers are available
-int logFirstRegister = 0;
-unsigned long logIntervallMS = 300000;
+int logIntervallRegister = 0;
+int logFirstRegister = 2; 
+unsigned long logIntervallMS = 0;
 unsigned long  logNextMS = 0;
 short logPosition = 1;
 short maxPosition = 0;
@@ -74,6 +75,20 @@ void setup() {
   digitalWrite(pinWarningLED, HIGH);
   digitalWrite(pinErrorLED, HIGH);
 
+  
+
+  // Read stored logintervall
+  unsigned int storedSec = 0;
+  EEPROM.get(logIntervallRegister,storedSec);
+  if (storedSec==0){
+    storedSec = 300; // Logintervall zero makes no sense
+  }
+  else if (storedSec==0xFFFF){
+    storedSec = 300; // This is assumed to be an EEPROM that was never written. So use 5 Minutes when Logging intervall was never specified.
+  }
+
+  logIntervallMS = storedSec * 1000;
+
   // Welcome messages
   lcd.setCursor(0, 0);
   lcd.print("Welcome         "); 
@@ -95,16 +110,17 @@ void setup() {
     delay(2000);
 
     lcd.setCursor(0, 0);
-    lcd.print("Logged all 5 min");
+    lcd.print("Logged all      ");
     lcd.setCursor(0, 1);
-    lcd.print("                "); 
+    lcd.print(storedSec); 
+    lcd.print(" seconds        "); 
     delay(2000);
   
     lcd.setCursor(0, 0);
   //lcd.print("1234567890123456"); 
     lcd.print("Used      -> 100"); 
     lcd.setCursor(0, 1);
-    lcd.print("Free      -> 411"); 
+    lcd.print("Free      -> 410"); 
     delay(2000);
   
     lcd.setCursor(0, 0);
@@ -122,6 +138,7 @@ void setup() {
   // Prepare Load logic
   loadSwitchNextToogleMS = millis() + loadSwitchOffTimeMS;
   loadActive = false;
+  
 
   // Prepare logging
   logNextMS = millis() + logIntervallMS;
@@ -320,11 +337,30 @@ void processCommand( ){
     Serial.println("Calibration to 400 ppm is done");  
     
   }
+  else if (command.startsWith("li")){
+    command.remove(0, 2);
+    unsigned long inputSec = 0;
+    inputSec = command.toInt( );
+    if (inputSec >= 0xFFFF){
+      Serial.println("65534 sec is maxium. Entered value is ignored");
+    }
+    else if (inputSec == 0){
+      Serial.println("0 seconds is not allowed. Entered value is ignored");
+    }
+    else {
+      logIntervallMS = inputSec * 1000;
+      EEPROM.put(logIntervallRegister,inputSec);
+      Serial.print("New log interval is ");
+      Serial.print(inputSec);
+      Serial.println(" seconds");
+    }
+  }
   else if (command == "h\n"){
     Serial.println("Help"); 
     Serial.println("Send h to get help");
+    Serial.println("li followed by seconds to set log intervall. Example: li300 to log all 300 seconds (Lowercase LI)."); 
     Serial.println("Send c to clear all logged data"); 
-    Serial.println("Send l to display all logged data"); 
+    Serial.println("Send l to display all logged data (Lowercase L)"); 
     Serial.println("Send sca to activate self calibration (Default)"); 
     Serial.println("Send sco to deactivate self calibration"); 
     Serial.println("Send cal to calibrate (CO2 has to be 400 ppm, wait 20 Minutes in this environment)"); 
