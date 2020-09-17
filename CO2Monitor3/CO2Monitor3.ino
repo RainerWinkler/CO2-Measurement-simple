@@ -52,8 +52,8 @@ short maxPosition = 0;
 unsigned long loadSwitchNextToogleMS = 0;
 bool loadActive = false;
 
-unsigned long loadSwitchOffTimeMS = 4500;
-unsigned long loadSwitchOnTimeMS = 1000;
+unsigned int loadSwitchOffTimeMS = 4500;
+unsigned int loadSwitchOnTimeMS = 1000;
 
 void setup() {
 
@@ -70,70 +70,70 @@ void setup() {
   // Configure LCD display
   lcd.begin(16, 2);
 
+  // Start serial connection to sensor
+  Serial.begin(115200);
+  sensorConnection.begin(9600);  
+
   // Checks during start
   digitalWrite(pinPositiveLED, HIGH);
   digitalWrite(pinWarningLED, HIGH);
   digitalWrite(pinErrorLED, HIGH);
 
-  
+  getLogIntervall( );
 
-  // Read stored logintervall
-  unsigned int storedSec = 0;
-  EEPROM.get(logIntervallRegister,storedSec);
-  if (storedSec==0){
-    storedSec = 300; // Logintervall zero makes no sense
-  }
-  else if (storedSec==0xFFFF){
-    storedSec = 300; // This is assumed to be an EEPROM that was never written. So use 5 Minutes when Logging intervall was never specified.
-  }
-
-  logIntervallMS = storedSec * 1000;
+//  // Read stored logintervall
+//  unsigned int storedSec = 0;
+//  EEPROM.get(logIntervallRegister,storedSec);
+//  if (storedSec==0){
+//    storedSec = 300; // Logintervall zero makes no sense
+//  }
+//  else if (storedSec==0xFFFF){
+//    storedSec = 300; // This is assumed to be an EEPROM that was never written. So use 5 Minutes when Logging intervall was never specified.
+//  }
+//
+//  logIntervallMS = storedSec * 1000;
 
   // Welcome messages
   lcd.setCursor(0, 0);
-  lcd.print("Welcome         "); 
+  lcd.print(F("Welcome         ")); 
   lcd.setCursor(0, 1);
-  lcd.print("CO2 Monitor 3   "); 
+  lcd.print(F("CO2 Monitor 3   ")); 
   delay(3000);
   for (int i = 1; i < 2; ++i){
   
     lcd.setCursor(0, 0);
-    lcd.print("Connect with    "); 
+    lcd.print(F("Connect with    ")); 
     lcd.setCursor(0, 1);
-    lcd.print("115200 Baud     ");
+    lcd.print(F("115200 Baud     "));
     delay(2000);
   
     lcd.setCursor(0, 0);
-    lcd.print("Send h for help "); 
+    lcd.print(F("Send h for help ")); 
     lcd.setCursor(0, 1);
-    lcd.print("                "); 
+    lcd.print(F("                ")); 
     delay(2000);
 
     lcd.setCursor(0, 0);
-    lcd.print("Logged all      ");
+    lcd.print(F("Logged all      "));
     lcd.setCursor(0, 1);
-    lcd.print(storedSec); 
-    lcd.print(" seconds        "); 
+    lcd.print(logIntervallMS/1000); 
+    lcd.print(F(" seconds        ")); 
     delay(2000);
   
     lcd.setCursor(0, 0);
   //lcd.print("1234567890123456"); 
-    lcd.print("Used      -> 100"); 
+    lcd.print(F("Used      -> 100")); 
     lcd.setCursor(0, 1);
-    lcd.print("Free      -> 410"); 
+    lcd.print(F("Free      -> 410")); 
     delay(2000);
   
     lcd.setCursor(0, 0);
   //lcd.print("1234567890123456"); 
-    lcd.print("** <- Bar graph "); 
+    lcd.print(F("** <- Bar graph ")); 
     lcd.setCursor(0, 1);
-    lcd.print("16 x * = 1000ppm"); 
+    lcd.print(F("16 x * = 1000ppm")); 
     delay(2000);
   }
-
-  // Start serial connection to sensor
-  Serial.begin(115200);
-  sensorConnection.begin(9600);  
 
   // Prepare Load logic
   loadSwitchNextToogleMS = millis() + loadSwitchOffTimeMS;
@@ -160,14 +160,14 @@ void setup() {
   // Make a mark that the device is started
   writeLog(49999);
   
-  Serial.print("maxPosition");
+  Serial.print(F("maxPosition "));
   Serial.println(maxPosition);
-  Serial.print("Logging Intervall [ms]: ");
+  Serial.print(F("Logging Intervall [ms]: "));
   Serial.println(logIntervallMS);
-  Serial.print("Logging started at ");
+  Serial.print(F("Logging started at "));
   Serial.println(logPosition);
 
-  Serial.println("Processing started");
+  Serial.println(F("Processing started"));
   
 }
 
@@ -209,23 +209,23 @@ void loop() {
 
   // Bar with intensity
   lcd.setCursor(0, 0);
-  if(CO2<438){       lcd.print("                ");} 
-  else if(CO2<475){  lcd.print("*               ");} 
-  else if(CO2<513){  lcd.print("**              ");} 
-  else if(CO2<550){  lcd.print("***             ");} 
-  else if(CO2<588){  lcd.print("****            ");} 
-  else if(CO2<625){  lcd.print("*****           ");} 
-  else if(CO2<663){  lcd.print("******          ");}
-  else if(CO2<700){  lcd.print("*******         ");} 
-  else if(CO2<738){  lcd.print("********        ");}
-  else if(CO2<775){  lcd.print("*********       ");}
-  else if(CO2<813){  lcd.print("**********      ");} 
-  else if(CO2<850){  lcd.print("***********     ");} 
-  else if(CO2<888){  lcd.print("************    ");} 
-  else if(CO2<925){  lcd.print("*************   ");} 
-  else if(CO2<963){  lcd.print("**************  ");} 
-  else if(CO2<1000){ lcd.print("*************** ");}
-  else {             lcd.print("****************");}; 
+  if(CO2<438){       lcd.print(F("                "));} 
+  else if(CO2<475){  lcd.print(F("*               "));} 
+  else if(CO2<513){  lcd.print(F("**              "));} 
+  else if(CO2<550){  lcd.print(F("***             "));} 
+  else if(CO2<588){  lcd.print(F("****            "));} 
+  else if(CO2<625){  lcd.print(F("*****           "));} 
+  else if(CO2<663){  lcd.print(F("******          "));}
+  else if(CO2<700){  lcd.print(F("*******         "));} 
+  else if(CO2<738){  lcd.print(F("********        "));}
+  else if(CO2<775){  lcd.print(F("*********       "));}
+  else if(CO2<813){  lcd.print(F("**********      "));} 
+  else if(CO2<850){  lcd.print(F("***********     "));} 
+  else if(CO2<888){  lcd.print(F("************    "));} 
+  else if(CO2<925){  lcd.print(F("*************   "));} 
+  else if(CO2<963){  lcd.print(F("**************  "));} 
+  else if(CO2<1000){ lcd.print(F("*************** "));}
+  else {             lcd.print(F("****************"));}; 
 
   if (CO2<925){
     // Write log position as long as not too many stars are displayed
@@ -281,12 +281,12 @@ void getCO2Value(short *CO2){
 }
 
 void processCommand( ){
-  Serial.print("Command received: ");
+  Serial.print(F("Command received: "));
   Serial.println(command); 
 
   if (command == "c\n"){
     // Clear log
-    Serial.println("Logged data will be cleared");
+    Serial.println(F("Logged data will be cleared"));
     EEPROM.put(logFirstRegister,50000); // This marks the end of the log
     // Restart logging
     logPosition = 1;
@@ -317,7 +317,7 @@ void processCommand( ){
     byte commandSelfCalOn[9] = {0xFF,0x01,0x79,0xA0,0x00,0x00,0x00,0x00,0xE6}; // on
   
     sensorConnection.write(commandSelfCalOn, 9);
-    Serial.println("Self calibration is on");  
+    Serial.println(F("Self calibration is on"));  
   }
   else if (command == "sco\n"){
     // deactivate self calibration
@@ -325,7 +325,7 @@ void processCommand( ){
     byte commandSelfCalOff[9] = {0xFF,0x01,0x79,0x00,0x00,0x00,0x00,0x00,0x86}; // off
   
     sensorConnection.write(commandSelfCalOff, 9);
-    Serial.println("Self calibration is off");  
+    Serial.println(F("Self calibration is off"));  
     
   }
   else if (command == "cal\n"){
@@ -334,7 +334,7 @@ void processCommand( ){
     byte commandCalibrate[9] = {0xFF,0x01,0x87,0x00,0x00,0x00,0x00,0x00,0x78}; // calibrate sensor
   
     sensorConnection.write(commandCalibrate, 9);
-    Serial.println("Calibration to 400 ppm is done");  
+    Serial.println(F("Calibration to 400 ppm is done"));  
     
   }
   else if (command.startsWith("li")){
@@ -350,27 +350,46 @@ void processCommand( ){
     else {
       logIntervallMS = inputSec * 1000;
       EEPROM.put(logIntervallRegister,inputSec);
-      Serial.print("New log interval is ");
+      Serial.print(F("New log interval is "));
       Serial.print(inputSec);
-      Serial.println(" seconds");
+      Serial.println(F(" seconds"));
+      Serial.println(F("Clear the log to make sure that always the same intervall is used."));
+      // Now change expected time for logging
+      logNextMS = millis() + logIntervallMS;
     }
   }
   else if (command == "h\n"){
-    Serial.println("Help"); 
-    Serial.println("Send h to get help");
-    Serial.println("li followed by seconds to set log intervall. Example: li300 to log all 300 seconds (Lowercase LI)."); 
-    Serial.println("Send c to clear all logged data"); 
-    Serial.println("Send l to display all logged data (Lowercase L)"); 
-    Serial.println("Send sca to activate self calibration (Default)"); 
-    Serial.println("Send sco to deactivate self calibration"); 
-    Serial.println("Send cal to calibrate (CO2 has to be 400 ppm, wait 20 Minutes in this environment)"); 
+    Serial.println(F("Help")); 
+    Serial.println(F("Send h to get help"));
+    Serial.println(F("li followed by seconds to set log intervall. Example: li300 to log all 300 seconds (Lowercase LI).")); 
+    Serial.println(F("Send c to clear all logged data")); 
+    Serial.println(F("Send l to display all logged data (Lowercase L)")); 
+    Serial.println(F("Send sca to activate self calibration (Default)")); 
+    Serial.println(F("Send sco to deactivate self calibration")); 
+    Serial.println(F("Send cal to calibrate (CO2 has to be 400 ppm, wait 20 Minutes in this environment)")); 
   };
+}
+
+void getLogIntervall( ){
+  // Read stored logintervall
+  unsigned int storedSec = 0;
+  EEPROM.get(logIntervallRegister,storedSec);
+  if (storedSec==0){
+    storedSec = 300; // Logintervall zero makes no sense
+  }
+  else if (storedSec==0xFFFF){
+    storedSec = 300; // This is assumed to be an EEPROM that was never written. So use 5 Minutes when Logging intervall was never specified.
+  }
+  logIntervallMS = storedSec * 1000;
+  Serial.print(F("Logging will be done all "));
+  Serial.print(storedSec);
+  Serial.println(F(" seconds"));
 }
     
 void writeLog(unsigned int value ){
     int nextAdress = logFirstRegister+logPosition*2;
     if (nextAdress+2>EEPROM.length()){
-      Serial.println("Log is full");
+      Serial.println(F("Log is full"));
     }
     else {
       int thisAdress = nextAdress-2;
@@ -378,7 +397,7 @@ void writeLog(unsigned int value ){
       unsigned int stopValue = 50000;
       EEPROM.put(thisAdress,co2value);
       EEPROM.put(nextAdress,stopValue);
-      Serial.print("Logged at position ");
+      Serial.print(F("Logged at position "));
       Serial.print(logPosition);
       Serial.print("\t");
       Serial.println(value);
