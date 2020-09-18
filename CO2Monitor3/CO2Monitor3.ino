@@ -293,7 +293,7 @@ void processCommand( ){
   Serial.print(F("Command received: "));
   Serial.println(command); 
 
-  if (command == "c\n"){
+  if (command == "clear\n"){
     // Clear log
     Serial.println(F("Logged data will be cleared"));
     EEPROM.put(logFirstRegister,50000); // This marks the end of the log
@@ -302,7 +302,7 @@ void processCommand( ){
     logNextMS = millis();
   }
 
-  else if (command == "l\n"){
+  else if (command == "log\n"){
     // Output Log result
     short position = 1;
     Serial.println("");
@@ -347,17 +347,18 @@ void processCommand( ){
     Serial.println(F("Self calibration is off"));  
     
   }
-  else if (command == "cal\n"){
+  else if (command == "calibrate\n"){
     // Calibrate sensor
     // Sending command for MH-Z19B according to data sheet
     byte commandCalibrate[9] = {0xFF,0x01,0x87,0x00,0x00,0x00,0x00,0x00,0x78}; // calibrate sensor
   
     sensorConnection.write(commandCalibrate, 9);
-    Serial.println(F("Calibration to 400 ppm is done"));  
+    Serial.println(F("Calibration to 400 ppm is done. Restart device to prevent wrong displayed data."));  
+    Serial.println(F("Do not do this too often to protect device. Wait some time before you repeat this."));  
     
   }
-  else if (command.startsWith("li")){
-    command.remove(0, 2);
+  else if (command.startsWith("logsec")){
+    command.remove(0, 7);
     unsigned long inputSec = 0;
     inputSec = command.toInt( );
     if (inputSec >= 0xFFFF){
@@ -380,13 +381,14 @@ void processCommand( ){
   }
   else if (command == "h\n"){
     Serial.println(F("Help")); 
+    Serial.println(F("Commands are case sensitive")); 
     Serial.println(F("Send h to get help"));
-    Serial.println(F("li followed by seconds to set log intervall. Example: li300 to log all 300 seconds (Lowercase LI).")); 
-    Serial.println(F("Send c to clear all logged data")); 
-    Serial.println(F("Send l to display all logged data (Lowercase L)")); 
+    Serial.println(F("logsec followed by seconds to set log intervall. Example: logsec300 to log all 300 seconds (Lowercase L).")); 
+    Serial.println(F("Send clear to clear all logged data")); 
+    Serial.println(F("Send log to display all logged data (Lowercase L)")); 
     Serial.println(F("Send sca to activate self calibration (Default)")); 
     Serial.println(F("Send sco to deactivate self calibration")); 
-    Serial.println(F("Send cal to calibrate (CO2 has to be 400 ppm, wait 20 Minutes in this environment)")); 
+    Serial.println(F("Send calibrate to calibrate (CO2 has to be 400 ppm, wait 20 Minutes in this environment)")); 
   };
 }
 
