@@ -41,10 +41,13 @@ String command = "";
 // 0. In case of 0 no free EEPROM registers are available
 int logIntervallRegister = 0;
 int logFirstRegister = 2; 
-unsigned long logIntervallMS = 0;
+unsigned long logIntervallMS = 0; // The log intervall in milli seconds
+unsigned int storedSec = 0; // The log intervall in seconds
 unsigned long  logNextMS = 0;
 short logPosition = 1;
 short maxPosition = 0;
+
+#define DEVICE_STARTED 49999
 
 
 // Configure additional load to prevent that a powerbank goes into standby mode
@@ -82,7 +85,7 @@ void setup() {
 //  getLogIntervall( );
 
   // Read stored logintervall
-  unsigned int storedSec = 0;
+
   EEPROM.get(logIntervallRegister,storedSec);
   if (storedSec==0){
     storedSec = 300; // Logintervall zero makes no sense
@@ -91,7 +94,7 @@ void setup() {
     storedSec = 300; // This is assumed to be an EEPROM that was never written. So use 5 Minutes when Logging intervall was never specified.
   }
 
-  logIntervallMS = storedSec * 1000;
+  logIntervallMS = storedSec * 1000UL;
 
   // Welcome messages
   lcd.setCursor(0, 0);
@@ -158,13 +161,16 @@ void setup() {
   maxPosition = ((EEPROM.length()-logFirstRegister)/2);
   
   // Make a mark that the device is started
-  writeLog(49999);
+  writeLog(DEVICE_STARTED);
   
   Serial.print(F("maxPosition "));
   Serial.println(maxPosition);
   Serial.print(F("Logging Intervall [ms]: "));
   Serial.println(logIntervallMS);
-  Serial.print(F("Logging started at "));
+  Serial.print(F("Logging Intervall [s]: "));
+  Serial.println(storedSec);
+  
+  Serial.print(F("Logging started at position "));
   Serial.println(logPosition);
 
   Serial.println(F("Processing started"));
@@ -296,6 +302,11 @@ void processCommand( ){
   else if (command == "l\n"){
     // Output Log result
     short position = 1;
+    Serial.println("");
+    Serial.print(F("Logging intervall: "));
+    Serial.print(storedSec);
+    Serial.println(F(" seconds"));
+    Serial.println(F("Position\tCO2[ppm]"));
     for (int index = logFirstRegister ; index < EEPROM.length()-1;) {     
       unsigned int value;
       EEPROM.get(index,value);
@@ -305,7 +316,12 @@ void processCommand( ){
       }
       Serial.print(position);
       Serial.print("\t");
-      Serial.println(value);
+      if (value == DEVICE_STARTED){
+      Serial.println(F("Started"));
+      }
+      else {
+        Serial.println(value);
+      }
 
       index = index + 2;
       position = position + 1;
@@ -349,6 +365,7 @@ void processCommand( ){
     }
     else {
       logIntervallMS = inputSec * 1000;
+      storedSec = inputSec;
       EEPROM.put(logIntervallRegister,inputSec);
       Serial.print(F("New log interval is "));
       Serial.print(inputSec);
