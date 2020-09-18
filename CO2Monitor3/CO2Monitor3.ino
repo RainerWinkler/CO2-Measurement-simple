@@ -79,19 +79,19 @@ void setup() {
   digitalWrite(pinWarningLED, HIGH);
   digitalWrite(pinErrorLED, HIGH);
 
-  getLogIntervall( );
+//  getLogIntervall( );
 
-//  // Read stored logintervall
-//  unsigned int storedSec = 0;
-//  EEPROM.get(logIntervallRegister,storedSec);
-//  if (storedSec==0){
-//    storedSec = 300; // Logintervall zero makes no sense
-//  }
-//  else if (storedSec==0xFFFF){
-//    storedSec = 300; // This is assumed to be an EEPROM that was never written. So use 5 Minutes when Logging intervall was never specified.
-//  }
-//
-//  logIntervallMS = storedSec * 1000;
+  // Read stored logintervall
+  unsigned int storedSec = 0;
+  EEPROM.get(logIntervallRegister,storedSec);
+  if (storedSec==0){
+    storedSec = 300; // Logintervall zero makes no sense
+  }
+  else if (storedSec==0xFFFF){
+    storedSec = 300; // This is assumed to be an EEPROM that was never written. So use 5 Minutes when Logging intervall was never specified.
+  }
+
+  logIntervallMS = storedSec * 1000;
 
   // Welcome messages
   lcd.setCursor(0, 0);
@@ -116,7 +116,7 @@ void setup() {
     lcd.setCursor(0, 0);
     lcd.print(F("Logged all      "));
     lcd.setCursor(0, 1);
-    lcd.print(logIntervallMS/1000); 
+    lcd.print(storedSec); 
     lcd.print(F(" seconds        ")); 
     delay(2000);
   
@@ -370,21 +370,21 @@ void processCommand( ){
   };
 }
 
-void getLogIntervall( ){
-  // Read stored logintervall
-  unsigned int storedSec = 0;
-  EEPROM.get(logIntervallRegister,storedSec);
-  if (storedSec==0){
-    storedSec = 300; // Logintervall zero makes no sense
-  }
-  else if (storedSec==0xFFFF){
-    storedSec = 300; // This is assumed to be an EEPROM that was never written. So use 5 Minutes when Logging intervall was never specified.
-  }
-  logIntervallMS = storedSec * 1000;
-  Serial.print(F("Logging will be done all "));
-  Serial.print(storedSec);
-  Serial.println(F(" seconds"));
-}
+//void getLogIntervall( ){
+//  // Read stored logintervall
+//  unsigned int storedSec = 0;
+//  EEPROM.get(logIntervallRegister,storedSec);
+//  if (storedSec==0){
+//    storedSec = 300; // Logintervall zero makes no sense
+//  }
+//  else if (storedSec==0xFFFF){
+//    storedSec = 300; // This is assumed to be an EEPROM that was never written. So use 5 Minutes when Logging intervall was never specified.
+//  }
+//  logIntervallMS = storedSec * 1000;
+//  Serial.print(F("Logging will be done all "));
+//  Serial.print(storedSec);
+//  Serial.println(F(" seconds"));
+//}
     
 void writeLog(unsigned int value ){
     int nextAdress = logFirstRegister+logPosition*2;
