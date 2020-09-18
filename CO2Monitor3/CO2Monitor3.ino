@@ -358,7 +358,7 @@ void processCommand( ){
     
   }
   else if (command.startsWith("logsec")){
-    command.remove(0, 7);
+    command.remove(0, 6);
     unsigned long inputSec = 0;
     inputSec = command.toInt( );
     if (inputSec >= 0xFFFF){
