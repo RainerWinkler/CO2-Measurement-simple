@@ -34,6 +34,7 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 // Commands via Serial Interface
 
+#define BAUDRATE_SERIAL 9600
 String command = "";
 
 // Configure EEPROM usage for log
@@ -74,7 +75,7 @@ void setup() {
   lcd.begin(16, 2);
 
   // Start serial connection to sensor
-  Serial.begin(115200);
+  Serial.begin(BAUDRATE_SERIAL); // 115200
   sensorConnection.begin(9600);  
 
   // Checks during start
@@ -107,7 +108,8 @@ void setup() {
     lcd.setCursor(0, 0);
     lcd.print(F("Connect with    ")); 
     lcd.setCursor(0, 1);
-    lcd.print(F("115200 Baud     "));
+    lcd.print(BAUDRATE_SERIAL);
+    lcd.print(F(" Baud     "));
     delay(2000);
   
     lcd.setCursor(0, 0);
@@ -179,9 +181,10 @@ void setup() {
 
 void loop() {
 
-    while(Serial.available()) {
-      char character = Serial.read();
-      command.concat(character);
+  while(Serial.available()) {
+    char character = Serial.read();
+    command.concat(character);
+    delay(1); // Give Arduino time to wait for the next character (https://stackoverflow.com/questions/9901058/arduino-cant-read-serial-properly/11680065)
   }
 
   if (command != "") {
